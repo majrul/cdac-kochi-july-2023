@@ -14,7 +14,7 @@ public interface FlightRepository extends JpaRepository<Flight, Integer> {
 	@Query("select f from Flight f where f.source = ?1 and f.destination = ?2 and f.flightDate = ?3")
 	public List<Flight> findAvailableFlights(String source,  String destination, LocalDate date);
 	
-	@Query("select count(f) from Flight f where f.flightNo = ?1 and f.flightDate = ?2 and f.availableSeats = ?3")
+	@Query("select count(f) from Flight f where f.flightNo = ?1 and f.flightDate = ?2 and f.availableSeats >= ?3")
 	public Long findIfSeatsAvailable(String flightNo, LocalDate date, int noOfSeats);
 	
 	@Modifying
