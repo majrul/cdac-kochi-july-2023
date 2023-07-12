@@ -1,0 +1,17 @@
+Deploy a Web application manually on Tomcat server
+
+- To start the Tomcat server, we need to execute:
+Tomcat\bin\startup.bat or startup.sh
+
+If tomcat doesn't starts, then most probably it's because of JAVA_HOME environment variable not been set, for ex:
+JAVA_HOME=c:\program files\java\jdk1.8.11_201
+
+To confirm Tomcat is up and running, we can check from the browser by typing:
+http://localhost:8080
+
+If Tomcat is still not running, then it's most probably because of port issue. We need to change the port no. by editing
+Tomcat\conf\server.xml
+
+- The easiest way to deploy an application on Tomcat server 
+  is by copying the war file in the Tomcat\webapps folder
+

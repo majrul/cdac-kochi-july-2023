@@ -1,0 +1,19 @@
+To practice Maven:
+- First we need download Maven if not done before:
+	https://dlcdn.apache.org/maven/maven-3/3.9.3/binaries/apache-maven-3.9.3-bin.zip
+- Then extract it somewhere
+- Then set the PATH in Windows as an Environment Variable:
+  - c:\apache-maven-3.9.3\bin
+- On Mac/Linux, on the command prompt/terminal:
+	export SET PATH=/path/to/apache-maven-3.8.6/bin:$PATH  
+	
+Now to compile our Maven project, we can say:
+mvn compile
+
+To run a particular java code using maven, we can say:
+mvn exec:java -Dexec.mainClass=com.cdac.CreatePdf
+
+
+To create a jar of our project, we can say:
+mvn package
+
