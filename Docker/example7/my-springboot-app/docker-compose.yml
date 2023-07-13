@@ -1,0 +1,30 @@
+services:
+  #service 1: setting up mysql database
+  mysqldb:
+   image: mysql
+   container_name: mysql-service
+   environment:
+    - MYSQL_ROOT_PASSWORD=passw0rd
+    - MYSQL_USER=root
+   ports:
+    - "3307:3306"
+   restart: always
+  
+  #service 2: setting up our spring boot app
+  my-springboot-app:
+   image: my-springboot-app
+   container_name: backend-service
+   build:
+    context: .
+    dockerfile: Dockerfile
+   ports:
+    - "9090:9090"
+   restart: always
+   depends_on:
+    - mysqldb
+   environment:
+    SPRING_APPLICATION_JSON: '{
+        "spring.datasource.url": "jdbc:mysql://mysql-service:3306/training?createDatabaseIfNotExist=true",
+        "spring.datasource.username": "root",
+        "spring.datasource.password": "passw0rd"
+     }'
