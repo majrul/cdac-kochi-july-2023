@@ -1,0 +1,94 @@
+Download jenkins.war from the jenkins website
+
+To start the jenkins server:
+java -jar jenkins.war 
+
+To run the server on a different port than 8080
+java -jar jenkins.war --httpPort=9000
+
+Once the server starts, a default password for admin access
+will be displayed on the console, make a note of it
+
+Then open a browser and type:
+http://localhost:9000
+
+After you login, select the "Install Suggested Plugins" option and proceed
+
+Once all the plugins will get installed, you will asked for entering the admin user details for future login
+
+Enter admin for the username and password both
+
+
+TODO:
+
+1. Deploy a Web application manually on Tomcat server
+
+- To start the Tomcat server, we need to execute:
+Tomcat\bin\startup.bat or startup.sh
+
+If tomcat doesn't starts, then most probably it's because of JAVA_HOME environment variable not been set, for ex:
+JAVA_HOME=c:\program files\java\jdk1.8.11_201
+
+To confirm Tomcat is up and running, we can check from the browser by typing:
+http://localhost:8080
+
+If Tomcat is still not running, then it's most probably because of port issue. We need to change the port no. by editing
+Tomcat\conf\server.xml
+
+- The easiest way to deploy an application on Tomcat server is by copying the war file in the Tomcat\webapps folder
+
+
+
+2. Deploy a Web application automatically on Tomcat server using Jenkins
+
+- First, we need to enable Remote Deployment access on Tomcat server by adding the required roles and user in:
+Tomcat/conf/tomcat-users.xml
+
+<role rolename="manager-gui" />
+<role rolename="manager-script" />
+
+<user username="admin" password="admin" 
+                          roles="manager-gui, manager-script"/>
+
+
+- Next in Jenkins, there are few settings we need to do:
+  - We need to install few plugins which will help us in our next 	example:
+  - Go to Jenkins Dashboard\Manage Jenkins\Manage Plugins
+  	Under Available plugins, search for the below ones and install:
+  		- Maven Integration Plugin
+  		- Deploy to Container Plugin
+
+  - Next we need to set THE JAVA_HOME and MAVEN_HOME in Jenkins
+  	- Jenkins Dashboard\Manage Jenkins\Global Tool Configuration
+
+- Before we proceed further, using Eclipse create/identify a Maven based Web application which we are going to deploy on Tomcat using Jenkins
+- Push this project to Github or any other repository
+
+- Now we will create a new job in jenkins to build and deploy our web application
+	- Create a New Item
+	- Enter some name, for ex: ci-cd-demo
+	- Select Maven Project instead of Freestyle Project
+	- On the next screen, there are 3 important steps for us:
+		- Configuring Github repo where our project resides
+		- Configuring Maven to build our project and generate the war
+		- Configuring Tomcat for the deployment
+
+		- Under Source code management option, select Git and copy/paste the Github repo URL, for ex:
+			https://github.com/majrul/ci-cd-demo
+		
+		- Next, under Build, enter the correct location of POM.xml file, for ex:
+			mywebapp/pom.xml
+		- Then under Goals and options, type:
+		package
+
+		- Then under post build actions, select "Deploy war/ear to Container" option.
+		- Under WAR/EAR files option, type: **/*.war
+		- Under Context Path, enter: /mywebapp
+		- Under Containers, select Tomcat 9.x Remote
+			- Under credentials, enter admin account details required 	for connecting to Tomcat remotely
+			- Enter the Tomcat URL, for ex: http://localhost:8181
+
+
+
+
+
